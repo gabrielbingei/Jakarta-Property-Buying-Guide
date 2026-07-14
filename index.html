@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jakarta Property Plate — a buyer's field guide</title>
+<meta name="description" content="A working field guide to buying an apartment or landed house in Jakarta: zoning tiers, price bands, title law, real transaction costs, flood and transit risk, and interactive calculators.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Jakarta Property Plate
+   Visual language borrowed from the RDTR zoning plate:
+   yellow = permukiman (housing), salmon = perdagangan & jasa,
+   green = RTH, blue = infrastruktur. Codes in mono, prose in serif.
+   ============================================================ */
+
+:root{
+  --paper:#FBFAF7;
+  --paper-2:#F2F1EB;
+  --ink:#17191C;
+  --ink-2:#4B4F55;
+  --ink-3:#83878D;
+  --rule:#DCD9D0;
+  --rule-2:#C3BFB3;
+
+  /* RDTR legend colours */
+  --z-housing:#F5CE3E;   /* permukiman */
+  --z-commerce:#E27D6D;  /* perdagangan & jasa */
+  --z-green:#7FA96B;     /* ruang terbuka hijau */
+  --z-transit:#3D5A80;   /* infrastruktur / transit */
+  --z-flood:#8C6BB1;     /* rawan banjir */
+
+  --tier-1:#17191C;
+  --tier-2:#5C6169;
+  --tier-3:#9A9187;
+  --tier-4:#C3BFB3;
+
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+
+  --wrap:1180px;
+  --gut:clamp(20px,4vw,56px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{color:var(--z-transit)}
+:focus-visible{outline:2px solid var(--z-transit);outline-offset:3px}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.narrow{max-width:760px}
+
+/* ---------- type scale ---------- */
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+h2{font-size:clamp(30px,4.4vw,46px);margin:0 0 .35em}
+h3{font-size:clamp(21px,2.4vw,27px);font-weight:600;letter-spacing:-.01em;margin:2.2em 0 .5em}
+h4{font-size:18px;font-weight:600;letter-spacing:0;margin:1.6em 0 .3em}
+p{margin:0 0 1.05em}
+.lede{font-size:clamp(19px,2vw,22px);line-height:1.5;color:var(--ink-2)}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 1.4em;display:flex;align-items:center;gap:10px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+.mono{font-family:var(--mono);font-size:.86em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- masthead ---------- */
+header.plate{
+  border-bottom:2px solid var(--ink);
+  background:
+    repeating-linear-gradient(90deg,transparent 0 39px,rgba(23,25,28,.05) 39px 40px),
+    repeating-linear-gradient(0deg,transparent 0 39px,rgba(23,25,28,.05) 39px 40px),
+    var(--paper);
+}
+.plate-inner{padding:clamp(40px,7vw,84px) 0 0}
+.plate-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-2);display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:28px;
+}
+h1{
+  font-size:clamp(42px,8.4vw,104px);
+  line-height:.92;letter-spacing:-.045em;
+  max-width:15ch;
+}
+h1 em{font-style:normal;background:var(--z-housing);box-shadow:0 0 0 4px var(--z-housing);border-radius:1px}
+.plate-lede{max-width:56ch;margin:26px 0 0;font-size:clamp(18px,2vw,21px);color:var(--ink-2)}
+
+/* legend strip = the signature */
+.legend{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  border-top:1px solid var(--rule);margin-top:48px;
+}
+.legend div{
+  padding:16px 18px 20px;border-right:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);
+}
+.legend div:last-child{border-right:0}
+.legend span{display:block;height:10px;margin-bottom:12px}
+.legend b{display:block;font-family:var(--body);font-size:15px;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:600;margin-top:3px}
+
+/* ---------- nav ---------- */
+nav.toc{
+  position:sticky;top:0;z-index:40;background:var(--ink);color:var(--paper);
+  border-bottom:1px solid var(--ink);
+}
+nav.toc ul{list-style:none;display:flex;gap:0;margin:0;padding:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav.toc li{flex:none}
+nav.toc a{
+  display:block;padding:11px 16px;color:#C9C6BE;text-decoration:none;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  border-right:1px solid #2B2E33;
+}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--z-housing);color:var(--ink)}
+
+/* ---------- sections ---------- */
+section{padding:clamp(56px,8vw,104px) 0;border-bottom:1px solid var(--rule)}
+section.tint{background:var(--paper-2)}
+
+/* ---------- generic blocks ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,3vw,40px)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(20px,2.4vw,32px)}
+
+.card{background:var(--paper);border:1px solid var(--rule);padding:22px 24px 24px;border-radius:2px}
+section.tint .card{background:#fff}
+.card h4{margin-top:0}
+.card p:last-child{margin-bottom:0}
+.card .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px}
+
+.rule-list{list-style:none;margin:0;padding:0}
+.rule-list li{border-top:1px solid var(--rule);padding:14px 0;display:grid;grid-template-columns:180px 1fr;gap:20px}
+.rule-list li:last-child{border-bottom:1px solid var(--rule)}
+.rule-list dt,.rule-list .t{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);padding-top:2px}
+@media(max-width:640px){.rule-list li{grid-template-columns:1fr;gap:4px}}
+
+.callout{
+  border-left:4px solid var(--z-commerce);background:#fff;
+  padding:18px 22px;margin:26px 0;border-radius:0 2px 2px 0;
+}
+section.tint .callout{background:var(--paper)}
+.callout.good{border-left-color:var(--z-green)}
+.callout.note{border-left-color:var(--z-transit)}
+.callout p:last-child{margin-bottom:0}
+.callout strong{font-family:var(--display);font-weight:600}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:26px 0;border:1px solid var(--rule);background:#fff}
+section.tint .tw{background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);background:var(--paper-2);position:sticky;top:0;font-weight:500;
+}
+section.tint th{background:var(--paper-2)}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(245,206,62,.13)}
+
+.chip{
+  display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;white-space:nowrap;
+}
+.t1{background:var(--ink);color:var(--paper)}
+.t2{background:var(--tier-2);color:#fff}
+.t3{background:var(--z-housing);color:var(--ink)}
+.t4{background:var(--tier-4);color:var(--ink)}
+
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.risk-hi{background:var(--z-commerce)}
+.risk-md{background:var(--z-housing)}
+.risk-lo{background:var(--z-green)}
+
+/* ---------- tool ---------- */
+.tool{border:2px solid var(--ink);background:#fff;border-radius:2px}
+section.tint .tool{background:var(--paper)}
+.tool-head{
+  background:var(--ink);color:var(--paper);padding:12px 20px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.tool-body{padding:24px}
+.field{margin-bottom:18px}
+.field label{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:7px;
+}
+.field label output{font-size:13px;color:var(--ink);letter-spacing:0;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--z-transit);height:20px}
+input[type=number],select{
+  width:100%;padding:9px 11px;font-family:var(--mono);font-size:14px;
+  border:1px solid var(--rule-2);border-radius:2px;background:var(--paper);color:var(--ink);
+}
+.out-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:8px}
+.out-grid div{background:#fff;padding:14px 16px}
+section.tint .out-grid div{background:var(--paper)}
+.out-grid .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:5px}
+.out-grid .v{font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.out-grid .v.hero{font-size:24px}
+
+/* ranked bars */
+#rank{list-style:none;margin:0;padding:0}
+#rank li{
+  display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:center;
+  padding:9px 0;border-top:1px solid var(--rule);
+}
+#rank li:first-child{border-top:0}
+#rank .pos{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+#rank .bar{position:relative;height:26px;background:var(--paper-2);border-radius:1px;overflow:hidden}
+#rank .fill{position:absolute;inset:0 auto 0 0;background:var(--z-housing);transition:width .35s ease}
+#rank li:nth-child(-n+3) .fill{background:var(--z-transit)}
+#rank .nm{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;white-space:nowrap}
+#rank li:nth-child(-n+3) .nm{color:#fff}
+#rank .sc{font-family:var(--mono);font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+
+.checklist{list-style:none;margin:0;padding:0;counter-reset:c}
+.checklist li{
+  counter-increment:c;border-top:1px solid var(--rule);padding:15px 0 15px 44px;position:relative;
+}
+.checklist li:last-child{border-bottom:1px solid var(--rule)}
+.checklist li::before{
+  content:counter(c,decimal-leading-zero);position:absolute;left:0;top:16px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+}
+.checklist b{font-family:var(--display);font-weight:600;display:block;font-size:16px;margin-bottom:2px}
+
+footer{padding:56px 0 72px;background:var(--ink);color:#9A9791;font-size:14px}
+footer a{color:#D8D5CE}
+footer h4{color:var(--paper);margin-top:0}
+.srcs{list-style:none;margin:0;padding:0;columns:2;column-gap:40px}
+.srcs li{margin-bottom:7px;break-inside:avoid;font-family:var(--mono);font-size:12px}
+@media(max-width:700px){.srcs{columns:1}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+
+<header class="plate">
+  <div class="wrap plate-inner">
+    <div class="plate-tag">
+      <span>Jakarta &middot; Jabodetabek</span>
+      <span>Residential plate</span>
+      <span>Rev. July 2026</span>
+      <span>For G. &amp; A.</span>
+    </div>
+    <h1>Where to <em>buy</em> in Jakarta, and what it will actually cost.</h1>
+    <p class="plate-lede">A working field guide, not a brochure. Zoning tiers, honest price bands, the title law that decides whether you own anything, the transaction costs nobody quotes you up front, and the flood and transit facts that will still be true in fifteen years.</p>
+
+    <div class="legend" role="img" aria-label="Legend: four price tiers used throughout this guide, from elite to mass market.">
+      <div><span style="background:var(--tier-1)"></span>Tier 1<b>Elite / scarce</b></div>
+      <div><span style="background:var(--tier-2)"></span>Tier 2<b>Upper-mid</b></div>
+      <div><span style="background:var(--z-housing)"></span>Tier 3<b>Mid-market</b></div>
+      <div><span style="background:var(--tier-4)"></span>Tier 4<b>Mass / outer</b></div>
+      <div><span style="background:var(--z-transit)"></span>Signal<b>Transit-led upside</b></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ul>
+    <li><a href="#verdict">Start here</a></li>
+    <li><a href="#decide">The decision</a></li>
+    <li><a href="#zones">Zone directory</a></li>
+    <li><a href="#scorer">Shortlist tool</a></li>
+    <li><a href="#money">Cost calculator</a></li>
+    <li><a href="#title">Title &amp; law</a></li>
+    <li><a href="#risk">Flood &amp; risk</a></li>
+    <li><a href="#future">Pipeline</a></li>
+    <li><a href="#market">Market data</a></li>
+    <li><a href="#dd">Due diligence</a></li>
+    <li><a href="#somerset">Case: Somerset Berlian</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ul>
+</nav>
+
+<!-- ================= START HERE ================= -->
+<section id="verdict">
+  <div class="wrap">
+    <p class="eyebrow">00 &nbsp;/&nbsp; The short version</p>
+    <div class="grid2">
+      <div>
+        <h2>Five things that decide everything else</h2>
+        <p class="lede">If you read nothing else on this page, read this. Every recommendation further down is downstream of these five facts.</p>
+      </div>
+      <div>
+        <ol class="checklist">
+          <li><b>The city slopes, and so do the prices.</b> South Jakarta sits on higher, firmer ground. North Jakarta is alluvial coast, parts of it below sea level, subsiding several centimetres a year. That gradient, not fashion, is the spine of the price map.</li>
+          <li><b>Land appreciates. Buildings depreciate. Strata title does both badly.</b> Landed housing has outperformed apartments consistently, and Indonesian resale demand strongly favours land. An apartment is a lifestyle and cashflow decision; a house is a wealth decision.</li>
+          <li><b>Transit is the only thing rezoning the map.</b> Under the current Jakarta detailed spatial plan, allowable building intensity is scored on the infrastructure serving a site. A new station literally increases what you may build. Rail access is now a pricing variable, not just a convenience.</li>
+          <li><b>The headline price is roughly 90% of the cheque.</b> Budget 8&ndash;15% on top for transfer duty, notary, financing and fit-out. See the calculator.</li>
+          <li><b>Nobody credible is forecasting a boom.</b> Realistic 2026 growth: 0&ndash;2% for weak apartment stock, 2&ndash;5% for good landed, 4&ndash;6% in the strongest Greater Jakarta townships. Buy for use and yield, not for a flip.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <p><strong>What this document is.</strong> A structured synthesis of public market research (Colliers, Cushman &amp; Wakefield, JLL, Bank Indonesia, BPS), Indonesian property law, and infrastructure plans, assembled into a decision tool. Price bands marked <em>indicative</em> are judgement calls built from asking-price ranges &mdash; treat them as a starting bracket for negotiation, not as an appraisal. It is not legal or financial advice, and I am not a licensed advisor. Before you sign anything, get a notary/PPAT and, if you're financing, an independent appraiser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE DECISION ================= -->
+<section id="decide" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">01 &nbsp;/&nbsp; Framing the decision</p>
+    <h2>Apartment or house? Buy or rent?</h2>
+    <p class="lede narrow">These are two separate questions and most buyers collapse them into one. Answer them in order.</p>
+
+    <h3>Question one: are you buying an asset, or a life?</h3>
+    <div class="grid2">
+      <div class="card">
+        <span class="k">Landed house</span>
+        <h4>Buy this if you want wealth</h4>
+        <p>You own land, which is the only part of Indonesian residential property that reliably appreciates. Resale demand is deep because the cultural preference for land ownership is genuine and durable. Greater Jakarta land prices have been moving ~3% a year, against ~1% for apartments.</p>
+        <p><strong>The cost:</strong> in the zones you'd actually want, a house is a 15&ndash;60 billion rupiah decision. Outside them, you are buying a long commute. Maintenance is on you. Security is on you.</p>
+      </div>
+      <div class="card">
+        <span class="k">Apartment / strata</span>
+        <h4>Buy this if you want a life</h4>
+        <p>You buy proximity, security, facilities and zero maintenance. In central Jakarta it's the only realistic way to live inside the traffic ring. Foreigners can own strata; they cannot own freehold land.</p>
+        <p><strong>The cost:</strong> you own a share of a building, not land. Service charges (IPL) and sinking-fund calls escalate. Older, poorly managed towers are the single worst-performing asset class in this market right now. Resale is slow: apartments sit on market roughly 95 days versus ~70 for houses.</p>
+      </div>
+    </div>
+
+    <h3>Question two: does buying beat renting for you?</h3>
+    <p>Jakarta's price-to-income ratio sits around 15&ndash;20&times; annual household income for formal housing &mdash; comparable to Bangkok or Manila, well below Singapore. Gross rental yields run roughly 5&ndash;8%, which is respectable, but mortgage rates and the cautious lending environment eat much of that spread.</p>
+
+    <div class="callout">
+      <p><strong>The rent-first rule.</strong> If either of you has any realistic chance of leaving Jakarta inside five years, rent. Transaction costs in and out are roughly 8&ndash;15% on purchase and another ~2.5% final income tax on sale (paid by the seller). At 0&ndash;3% annual appreciation, a sub-five-year hold is a near-certain loss in real terms. Buying makes sense on a seven-year-plus horizon, or if the property is genuinely for keeps.</p>
+    </div>
+
+    <h3>Question three: how much house can you carry?</h3>
+    <p>The bank will lend on your income; that isn't the same as what you should borrow. Two guardrails worth holding:</p>
+    <ul class="rule-list">
+      <li><span class="t">Debt service</span><span>Keep total monthly debt (KPR + everything else) at or under 30&ndash;35% of combined net monthly income. Indonesian banks will often approve above this. Don't take it.</span></li>
+      <li><span class="t">Cash buffer</span><span>Do not spend your last rupiah on the down payment. Hold 6 months of full instalments plus service charges in reserve, in cash, after closing. Property is illiquid here &mdash; a forced sale in a soft market is the trap.</span></li>
+      <li><span class="t">Currency</span><span>If either income is in a foreign currency and the loan is in rupiah, you carry FX risk in both directions. Rupiah weakness in 2026 has already bitten. Size the loan against your rupiah-equivalent income at a conservative rate, not today's rate.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= ZONE DIRECTORY ================= -->
+<section id="zones">
+  <div class="wrap">
+    <p class="eyebrow">02 &nbsp;/&nbsp; Zone directory</p>
+    <h2>Every zone worth considering, ranked and explained</h2>
+    <p class="lede narrow">Sorted roughly by tier. Apartment figures are per square metre of strata area. Land figures are per square metre of plot for landed housing. Both are indicative asking ranges, not appraisals.</p>
+
+    <div class="tw">
+      <table>
+        <caption class="sr-only">Jakarta residential zones with tier, price bands, flood and transit ratings, and who lives there.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Zone</th>
+            <th scope="col">Tier</th>
+            <th scope="col">Apt IDR m/sqm</th>
+            <th scope="col">Land IDR m/sqm</th>
+            <th scope="col">Flood</th>
+            <th scope="col">Rail</th>
+            <th scope="col">Who lives there &amp; why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Menteng</b><br><span class="mono">Central</span></td>
+            <td><span class="chip t1">Tier 1</span></td>
+            <td class="n">50&ndash;90</td>
+            <td class="n">30&ndash;60</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>MRT nearby</td>
+            <td>Political elite, senior diplomats, old money. Dutch garden-suburb plots that legally cannot be subdivided into towers &mdash; permanent scarcity. Shortest commute to Sudirman&ndash;Thamrin. Thin apartment stock; heritage houses dominate. Buy for permanence, not yield.</td>
+          </tr>
+          <tr>
+            <td><b>SCBD &amp; Kuningan</b><br><span class="mono">Central</span></td>
+            <td><span class="chip t1">Tier 1</span></td>
+            <td class="n">53&ndash;90</td>
+            <td class="n">&mdash;</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>MRT direct</td>
+            <td>The CBD tower belt. Highest per-sqm in the city; CBD strata averaged ~53.4m/sqm and rising ~1% y/y. Deepest expat and corporate rental pool, so the best yield and the easiest re-let. Also the most exposed to a downturn in multinational headcount.</td>
+          </tr>
+          <tr>
+            <td><b>Kebayoran Baru</b><br><span class="mono">Senopati, Dharmawangsa, Sriwijaya</span></td>
+            <td><span class="chip t1">Tier 1</span></td>
+            <td class="n">40&ndash;65</td>
+            <td class="n">30&ndash;55</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>MRT direct</td>
+            <td>Indonesia's first planned satellite town (1950s), now the old-money-plus-nightlife core. Ambassadors and senior executives on the inner blocks. Best combination anywhere of prestige, MRT access and dining. The most liquid Tier 1 resale market.</td>
+          </tr>
+          <tr>
+            <td><b>Pondok Indah</b><br><span class="mono">South</span></td>
+            <td><span class="chip t1">Tier 1</span></td>
+            <td class="n">35&ndash;55</td>
+            <td class="n">25&ndash;45</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>None</td>
+            <td>The purpose-built elite suburb: golf, mall, hospital, and the JIS anchor. The default choice for expat families with school-age children, and long a Japanese-family stronghold. <b>Car-dependent</b> &mdash; the MRT does not reach it, and the peak run north is punishing. Buy if your life is south of the ring road.</td>
+          </tr>
+          <tr>
+            <td><b>PIK &amp; PIK 2</b><br><span class="mono">North / Tangerang</span></td>
+            <td><span class="chip t1">Tier 1</span></td>
+            <td class="n">30&ndash;60</td>
+            <td class="n">20&ndash;50</td>
+            <td><span class="dot risk-hi"></span>Engineered</td>
+            <td>None (bus)</td>
+            <td>Self-contained coastal city, Chinese-Indonesian wealth core, own schools/hospital/beach. Genuinely the only <em>new</em> Tier 1 zone being created. But: reclaimed mangrove kept dry by a Dutch-style polder system, and PIK 2 carries live political risk (its national-strategic-project status was pared back to the ecotourism component; parliamentarians and the MUI have called for revocation). Highest upside, highest tail risk on this page.</td>
+          </tr>
+          <tr>
+            <td><b>Permata Hijau</b><br><span class="mono">Grogol Utara, Kebayoran Lama</span></td>
+            <td><span class="chip t2">Tier 2</span></td>
+            <td class="n">28&ndash;45</td>
+            <td class="n">25&ndash;40</td>
+            <td><span class="dot risk-md"></span>Pocket</td>
+            <td>None (KRL 2km)</td>
+            <td>Leafy, well-planned, genuine cachet &mdash; but administratively Kebayoran <em>Lama</em>, not <em>Baru</em>, and that word is worth money. 15&ndash;45 min to the Golden Triangle depending on destination; the Jl. Panjang corridor is reliably congested. Pakubuwono towers are the local premium benchmark. Good address, no transit story.</td>
+          </tr>
+          <tr>
+            <td><b>Kemang &amp; Cipete</b><br><span class="mono">South</span></td>
+            <td><span class="chip t2">Tier 2</span></td>
+            <td class="n">25&ndash;40</td>
+            <td class="n">20&ndash;35</td>
+            <td><span class="dot risk-hi"></span>High (Kemang)</td>
+            <td>MRT (Cipete)</td>
+            <td>Kemang is the expat social capital &mdash; and it was never planned. Narrow streets, chronic congestion, and <b>known flooding in specific pockets</b>. Cipete is the quieter, cheaper, French-community version (Lyc&eacute;e Fran&ccedil;ais) and it <em>has</em> an MRT station. If you want this belt, Cipete is the better buy.</td>
+          </tr>
+          <tr>
+            <td><b>Cilandak / TB Simatupang</b><br><span class="mono">South</span></td>
+            <td><span class="chip t2">Tier 2</span></td>
+            <td class="n">25&ndash;38</td>
+            <td class="n">18&ndash;30</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>MRT (Fatmawati)</td>
+            <td>The school-and-office belt: JIS main campus, Nord Anglia, plus the Simatupang office corridor. Gated compounds (Executive Paradise, Astoria) are the expat-family default. Cheaper than Pondok Indah, similar life. One of the highest new-apartment concentrations in the city right now.</td>
+          </tr>
+          <tr>
+            <td><b>Lebak Bulus / Fatmawati</b><br><span class="mono">South</span></td>
+            <td><span class="chip t2">Tier 2</span></td>
+            <td class="n">24&ndash;36</td>
+            <td class="n">16&ndash;28</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>MRT terminus</td>
+            <td>The clearest transit-uplift play in Jakarta. MRT terminus + depot, JIS and SIS nearby, and under the RDTR's infrastructure-scored intensity rules this is exactly the kind of node that gets upzoned. Not glamorous. Probably the best risk-adjusted South Jakarta buy.</td>
+          </tr>
+          <tr>
+            <td><b>Puri Indah / Kembangan</b><br><span class="mono">West</span></td>
+            <td><span class="chip t2">Tier 2</span></td>
+            <td class="n">25&ndash;40</td>
+            <td class="n">18&ndash;32</td>
+            <td><span class="dot risk-md"></span>Medium</td>
+            <td>None</td>
+            <td>West Jakarta's answer to Pondok Indah. Strong Chinese-Indonesian community, good malls and hospitals, decent toll access to the airport. Cut off from the MRT and from the southern school belt. Good value if your life is west.</td>
+          </tr>
+          <tr>
+            <td><b>Kelapa Gading</b><br><span class="mono">North</span></td>
+            <td><span class="chip t2">Tier 2</span></td>
+            <td class="n">22&ndash;35</td>
+            <td class="n">15&ndash;28</td>
+            <td><span class="dot risk-hi"></span>High</td>
+            <td>LRT</td>
+            <td>Mature, dense, excellent food, established Chinese-Indonesian district. But it is North Jakarta: subsidence and rob (tidal) flooding are structural, not occasional. Its long-term value is effectively a bet on the Giant Sea Wall being built. Price it accordingly.</td>
+          </tr>
+          <tr>
+            <td><b>Kemayoran / Senen</b><br><span class="mono">Central</span></td>
+            <td><span class="chip t3">Tier 3</span></td>
+            <td class="n">22&ndash;32</td>
+            <td class="n">12&ndash;22</td>
+            <td><span class="dot risk-md"></span>Medium</td>
+            <td>KRL</td>
+            <td>Mid-market vertical stock, close to the centre, unloved. Sits on the Thamrin&ndash;Kota Tua axis that consultants are calling the next development hotspot once MRT Phase 2 lands. Speculative, but the thesis is real.</td>
+          </tr>
+          <tr>
+            <td><b>Grogol / Slipi / Tomang</b><br><span class="mono">West</span></td>
+            <td><span class="chip t3">Tier 3</span></td>
+            <td class="n">20&ndash;30</td>
+            <td class="n">12&ndash;20</td>
+            <td><span class="dot risk-hi"></span>High</td>
+            <td>MRT E&ndash;W (2030)</td>
+            <td>Student and commuter belt (Trisakti, Tarumanagara). Tomang is a planned terminus of the MRT East&ndash;West line's first phase. Flood-prone along the Ciliwung/Grogol drains. A watch-list, not a buy-list &mdash; unless you're buying the 2030 line specifically.</td>
+          </tr>
+          <tr>
+            <td><b>BSD City / Gading Serpong</b><br><span class="mono">Tangerang</span></td>
+            <td><span class="chip t3">Tier 3</span></td>
+            <td class="n">18&ndash;28</td>
+            <td class="n">12&ndash;25</td>
+            <td><span class="dot risk-lo"></span>Low</td>
+            <td>KRL</td>
+            <td>The middle-class escape valve, and the fastest-growing residential area in Greater Jakarta (~4&ndash;6% projected 2026). Bigger, newer house for the price of a small old Jakarta one. Self-sufficient: hospitals, universities, malls, a tech corridor. Tangerang supplied 55% of all new Greater Jakarta launches in H2 2025 &mdash; which is both the appeal and the supply risk.</td>
+          </tr>
+          <tr>
+            <td><b>Bintaro</b><br><span class="mono">Tangerang Selatan</span></td>
+            <td><span class="chip t3">Tier 3</span></td>
+            <td class="n">18&ndash;28</td>
+            <td class="n">12&ndash;20</td>
+            <td><span class="dot risk-md"></span>Medium</td>
+            <td>KRL</td>
+            <td>Larger plots, lower prices, and the British School Jakarta with a real community around it. The catch is distance: a commute to SCBD or Central Jakarta is a genuine daily ordeal. Only rational if your school or office is here.</td>
+          </tr>
+          <tr>
+            <td><b>Sunter / Ancol / Kota</b><br><span class="mono">North</span></td>
+            <td><span class="chip t4">Tier 4</span></td>
+            <td class="n">18&ndash;28</td>
+            <td class="n">10&ndash;18</td>
+            <td><span class="dot risk-hi"></span>Severe</td>
+            <td>KRL</td>
+            <td>Older stock, mixed use, the sharp end of subsidence. Parts sit below sea level. Cheap for a reason. Avoid unless you are explicitly speculating on the sea wall and you can afford to be wrong.</td>
+          </tr>
+          <tr>
+            <td><b>East Jakarta</b><br><span class="mono">Cakung, Cipinang, Duren Sawit</span></td>
+            <td><span class="chip t4">Tier 4</span></td>
+            <td class="n">~22</td>
+            <td class="n">8&ndash;15</td>
+            <td><span class="dot risk-md"></span>Medium</td>
+            <td>LRT / KRL</td>
+            <td>The cheapest strata in the city at roughly 22m/sqm. Absorbs most incoming domestic migration. The MRT East&ndash;West line's first phase terminates at Medan Satria (Bekasi) around 2030, which will reprice this corridor &mdash; the only reason it's on this list.</td>
+          </tr>
+          <tr>
+            <td><b>Bekasi / Depok / Cengkareng</b><br><span class="mono">Outer</span></td>
+            <td><span class="chip t4">Tier 4</span></td>
+            <td class="n">18&ndash;30</td>
+            <td class="n">5&ndash;12</td>
+            <td><span class="dot risk-md"></span>Varies</td>
+            <td>LRT / KRL</td>
+            <td>Mass-market commuter belt, anchored on industrial employment. Entry point for first-time buyers (IDR 750m&ndash;1.3bn gets a small unit). Appreciation is slow; the VAT subsidy is doing a lot of the work. Fine as a first home; poor as an investment.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout good">
+      <p><strong>The pattern to notice.</strong> Tier 1 addresses are scarce and defensible but flat &mdash; you're paying for permanence. The <em>growth</em> is in two places only: the transit-upzoned nodes (Lebak Bulus, Fatmawati, Cipete, and eventually Tomang and the Thamrin&ndash;Kota Tua axis), and the townships (BSD, Serpong). Everything else is holding its value, not building it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCORER ================= -->
+<section id="scorer" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">03 &nbsp;/&nbsp; Shortlist tool</p>
+    <h2>Weight what you two actually care about</h2>
+    <p class="lede narrow">Drag the sliders to reflect your real priorities. The ranking recalculates live. Scores are my judgement on a 1&ndash;5 scale, not measured data &mdash; the tool is here to force the trade-off into the open, not to be an oracle.</p>
+
+    <div class="tool">
+      <div class="tool-head"><span>Priority weighting</span><span id="budgetTag">Budget filter: any</span></div>
+      <div class="tool-body">
+        <div class="grid2" style="gap:32px 48px">
+          <div>
+            <div class="field">
+              <label for="w_commute">Short commute to CBD <output id="o_commute">3</output></label>
+              <input type="range" id="w_commute" min="0" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <label for="w_school">International schools nearby <output id="o_school">3</output></label>
+              <input type="range" id="w_school" min="0" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <label for="w_transit">Rail / MRT access <output id="o_transit">3</output></label>
+              <input type="range" id="w_transit" min="0" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <label for="w_flood">Low flood &amp; subsidence risk <output id="o_flood">3</output></label>
+              <input type="range" id="w_flood" min="0" max="5" step="1" value="3">
+            </div>
+          </div>
+          <div>
+            <div class="field">
+              <label for="w_value">Value for money <output id="o_value">3</output></label>
+              <input type="range" id="w_value" min="0" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <label for="w_growth">Price growth potential <output id="o_growth">3</output></label>
+              <input type="range" id="w_growth" min="0" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <label for="w_liquid">Easy to resell / re-let <output id="o_liquid">3</output></label>
+              <input type="range" id="w_liquid" min="0" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <label for="w_life">Restaurants, life, community <output id="o_life">3</output></label>
+              <input type="range" id="w_life" min="0" max="5" step="1" value="3">
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:8px">
+          <label for="maxPrice">Max apartment price per sqm (IDR million) &mdash; set to 90 for no filter <output id="o_price">90</output></label>
+          <input type="range" id="maxPrice" min="20" max="90" step="5" value="90">
+        </div>
+
+        <h4 style="margin-top:26px">Ranked shortlist</h4>
+        <ol id="rank" aria-live="polite"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MONEY ================= -->
+<section id="money">
+  <div class="wrap">
+    <p class="eyebrow">04 &nbsp;/&nbsp; What it actually costs</p>
+    <h2>The cheque is bigger than the price</h2>
+    <p class="lede narrow">Indonesian property purchases carry roughly 8&ndash;15% in costs on top of the headline. Here is every line, and a calculator that adds them up.</p>
+
+    <div class="grid2" style="align-items:start">
+      <div>
+        <h3 style="margin-top:0">Every line item</h3>
+        <ul class="rule-list">
+          <li><span class="t">BPHTB</span><span><b>5%</b> of the transaction value, minus the regional threshold deduction (NPOPTKP). <b>Buyer pays.</b> This is the big one.</span></li>
+          <li><span class="t">PPh final</span><span><b>2.5%</b> of the transaction value. <b>Seller pays</b> &mdash; but on a new-build from a developer, assume it's baked into your price.</span></li>
+          <li><span class="t">PPN (VAT)</span><span><b>11&ndash;12%</b> on new-build purchases from a developer (PKP). Currently <b>heavily subsidised</b>: the government's VAT-borne-by-government scheme (PPN DTP) runs through 2026 with signals of extension to Dec 2027, covering landed houses up to IDR 5bn with a subsidy cap on the first IDR 2bn. Secondary/resale purchases from an individual are not subject to VAT.</span></li>
+          <li><span class="t">Notary / PPAT</span><span><b>0.5&ndash;1%</b>, negotiable. Covers the AJB (deed of sale), title search, and transfer registration at the BPN land office. Do not let the seller pick the notary.</span></li>
+          <li><span class="t">Bank / KPR fees</span><span><b>~1%</b> provision fee, plus appraisal, administration, life and fire insurance. Adds up to ~1.5&ndash;2.5% of the loan.</span></li>
+          <li><span class="t">Agent</span><span><b>2&ndash;3%</b>, normally the seller's cost, but confirm.</span></li>
+          <li><span class="t">Fit-out</span><span>The line everyone forgets. A bare "hand-over" unit needs flooring, kitchen, AC, wardrobes. Budget IDR 3&ndash;8m per sqm depending on finish.</span></li>
+          <li><span class="t">Ongoing: IPL</span><span>Apartment service charge, typically <b>IDR 15,000&ndash;30,000 per sqm per month</b> plus a sinking fund. On a 150 sqm unit that's IDR 2.25&ndash;4.5m every month, forever, and it escalates. Model it.</span></li>
+          <li><span class="t">Ongoing: PBB</span><span>Annual land &amp; building tax. Modest, but it scales with the assessed value (NJOP) which the city periodically re-rates upward.</span></li>
+        </ul>
+      </div>
+
+      <div class="tool">
+        <div class="tool-head"><span>Purchase &amp; carry calculator</span><span class="mono">IDR</span></div>
+        <div class="tool-body">
+          <div class="field">
+            <label for="c_price">Purchase price (IDR million)</label>
+            <input type="number" id="c_price" value="4500" min="100" step="50">
+          </div>
+          <div class="field">
+            <label for="c_dp">Down payment <output id="o_dp">20%</output></label>
+            <input type="range" id="c_dp" min="10" max="100" step="5" value="20">
+          </div>
+          <div class="field">
+            <label for="c_rate">Mortgage rate, after any teaser <output id="o_rate">9.5%</output></label>
+            <input type="range" id="c_rate" min="4" max="16" step="0.25" value="9.5">
+          </div>
+          <div class="field">
+            <label for="c_years">Tenor <output id="o_years">15 yrs</output></label>
+            <input type="range" id="c_years" min="5" max="30" step="1" value="15">
+          </div>
+          <div class="field">
+            <label for="c_sqm">Size (sqm) &mdash; for service charge</label>
+            <input type="number" id="c_sqm" value="150" min="20" step="5">
+          </div>
+          <div class="field">
+            <label for="c_type">Purchase type</label>
+            <select id="c_type">
+              <option value="resale">Resale from an individual (no VAT)</option>
+              <option value="new_subsidised">New-build, VAT subsidised (PPN DTP)</option>
+              <option value="new_full">New-build, full VAT at 11%</option>
+            </select>
+          </div>
+
+          <div class="out-grid">
+            <div><span class="k">Cash needed at closing</span><span class="v hero" id="r_cash">&mdash;</span></div>
+            <div><span class="k">Monthly instalment</span><span class="v hero" id="r_month">&mdash;</span></div>
+            <div><span class="k">Costs on top of price</span><span class="v" id="r_fees">&mdash;</span></div>
+            <div><span class="k">Est. service charge / mo</span><span class="v" id="r_ipl">&mdash;</span></div>
+            <div><span class="k">Total cost of the loan</span><span class="v" id="r_total">&mdash;</span></div>
+            <div><span class="k">Interest paid over term</span><span class="v" id="r_int">&mdash;</span></div>
+          </div>
+          <p class="mono" style="color:var(--ink-3);margin:14px 0 0;line-height:1.5">Assumes BPHTB 5% less an IDR 80m NPOPTKP threshold, notary 1%, bank fees 1.5% of loan, fit-out IDR 4m/sqm. Adjust the price field to test scenarios. Indicative only.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>The KPR teaser-rate trap.</strong> Indonesian banks advertise a low fixed rate for the first 1&ndash;3 years, then float. The floating rate is what you will actually pay for most of the loan, and it moves with the BI rate &mdash; which <em>rose</em> in June 2026. Model your affordability at the floating rate plus 2%, never at the teaser. If it only works at the teaser, it doesn't work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TITLE ================= -->
+<section id="title" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">05 &nbsp;/&nbsp; Title &amp; law</p>
+    <h2>What you are actually allowed to own</h2>
+    <p class="lede narrow">In Indonesia the certificate on the title, not the building, determines what you have. Get this wrong and nothing else matters.</p>
+
+    <div class="grid3">
+      <div class="card">
+        <span class="k">SHM</span>
+        <h4>Hak Milik &mdash; freehold</h4>
+        <p>The strongest right. Perpetual, inheritable, mortgageable. <b>Indonesian citizens only.</b> This is what you want for a landed house.</p>
+      </div>
+      <div class="card">
+        <span class="k">HGB</span>
+        <h4>Hak Guna Bangunan</h4>
+        <p>Right to build, typically 30 years, extendable 20, renewable another 30. Available to Indonesian citizens and to PT (Indonesian companies, including PMA). Most apartments and most developer housing sits on HGB. Renewable in practice, but it is a <b>renewal, with fees</b>, not a right in perpetuity.</p>
+      </div>
+      <div class="card">
+        <span class="k">SHMSRS</span>
+        <h4>Strata title</h4>
+        <p>Your apartment unit. It is a share of a building sitting on the underlying HGB (or HGB over HPL). <b>Check when the underlying HGB expires</b> &mdash; on a 1990s tower, that clock is well advanced, and renewal is a collective problem.</p>
+      </div>
+      <div class="card">
+        <span class="k">Hak Pakai</span>
+        <h4>Right of use</h4>
+        <p>The route for foreign individuals holding a valid residence permit. Applies to a landed house on Hak Pakai land, or to an apartment.</p>
+      </div>
+      <div class="card">
+        <span class="k">HGB / HPL</span>
+        <h4>The one to watch</h4>
+        <p>HGB granted <em>over</em> state or municipal management rights (HPL). Renewal is not automatic and depends on the HPL holder. Common in reclaimed and redeveloped areas. Ask the notary explicitly.</p>
+      </div>
+      <div class="card">
+        <span class="k">PPJB / AJB</span>
+        <h4>Contract vs. deed</h4>
+        <p>PPJB is only a binding sale <em>agreement</em> &mdash; common on off-plan. Ownership does not transfer until the <b>AJB</b> is executed before a PPAT and registered at the BPN. Do not treat a PPJB as ownership.</p>
+      </div>
+    </div>
+
+    <h3>If either of you is a foreign national</h3>
+    <ul class="rule-list">
+      <li><span class="t">Apartments</span><span>Permitted, via Hak Pakai / strata, with a valid stay permit. In Jakarta there is a <b>minimum purchase price of roughly IDR 3 billion</b>, which in practice pushes foreign buyers into two-bedroom units and above.</span></li>
+      <li><span class="t">Land</span><span>Foreigners <b>cannot hold Hak Milik</b>. Full stop.</span></li>
+      <li><span class="t">The nominee structure</span><span>Buying in an Indonesian friend's or spouse's name to hold freehold is <b>widely done and legally void</b>. The nominee is the legal owner; side agreements have been struck down. The most-regretted mistake foreign buyers make here is getting the land right wrong. Do not do it.</span></li>
+      <li><span class="t">Mixed marriage</span><span>Without a prenuptial (or postnuptial) agreement separating assets, an Indonesian spouse's ability to hold Hak Milik can be compromised. If this is your situation, see a notary <b>before</b> you shop, not after.</span></li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>The single highest-value hour you will spend.</strong> Take the certificate number to the BPN land office (or have your notary do a <em>pengecekan sertifikat</em>) and verify: the registered owner matches the seller, the land area matches the drawing, the expiry date, and whether it is encumbered by a mortgage (<em>hak tanggungan</em>) or a court block (<em>sita</em>). Do this <b>before</b> you pay any deposit. A deposit paid on an unverified certificate is money you may simply not get back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RISK ================= -->
+<section id="risk">
+  <div class="wrap">
+    <p class="eyebrow">06 &nbsp;/&nbsp; Physical risk</p>
+    <h2>Water is the permanent variable</h2>
+    <p class="lede narrow">Jakarta is subsiding. Roughly 40% of the city sits below sea level, and parts of the north are sinking on the order of several centimetres a year &mdash; in places far more. This is not a weather problem, it is a geology problem, and it is the deepest structural discount in the market.</p>
+
+    <div class="grid2">
+      <div>
+        <h4>What to check on any specific property</h4>
+        <ul class="rule-list">
+          <li><span class="t">Ask the neighbours</span><span>Not the agent. Ask the <em>satpam</em>, the warung owner, the RT/RW head: "how high did the water come in 2020? In 2007?" People remember, and they will tell you honestly.</span></li>
+          <li><span class="t">Look at the driveways</span><span>If houses on the street have raised entrances, added steps, or fresh render at ankle height, the street floods. This is the cheapest survey you will ever run.</span></li>
+          <li><span class="t">Go in the wet season</span><span>Roughly October to April. Viewing a Jakarta property only in the dry season is how people buy a swimming pool.</span></li>
+          <li><span class="t">Check the drain</span><span>Which <em>kali</em> (canal) does your street drain into, and how far is it? Kemang's flooding is a drainage-catchment story, not a coastal one.</span></li>
+          <li><span class="t">Groundwater</span><span>If the building extracts its own groundwater, it is contributing to its own subsidence. Ask what the water source is. Piped supply is a quality signal.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>The Giant Sea Wall question</h4>
+        <p>A ~19 km barrier across Jakarta Bay is targeted to break ground around <b>September 2026</b>, at an estimated <b>USD 8&ndash;10 billion</b> over 8&ndash;10 years, as one segment of a 575 km, 15-segment national programme along Java's north coast &mdash; total budget floated around USD 80 billion.</p>
+        <p>Every North Jakarta valuation is implicitly a bet on this. If it gets built, the north's flood discount compresses and PIK's premium is validated. If it stalls &mdash; and USD 80 billion is a number that has slipped before &mdash; subsidence keeps eating the coast.</p>
+        <div class="callout" style="margin-bottom:0">
+          <p><strong>Our position on this:</strong> do not pay a sea-wall premium for property that only makes sense if the sea wall is built. If you want north exposure, buy inside PIK's existing polder system, which already works, rather than in Sunter or Ancol, which are waiting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FUTURE ================= -->
+<section id="future" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">07 &nbsp;/&nbsp; Pipeline</p>
+    <h2>What will move the map, and when</h2>
+
+    <div class="tw">
+      <table>
+        <caption class="sr-only">Infrastructure and policy pipeline affecting Jakarta property values.</caption>
+        <thead><tr><th scope="col">Project</th><th scope="col">Status</th><th scope="col">What it does to prices</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>RDTR intensity scoring</b><br><span class="mono">Pergub 31/2022</span></td>
+            <td class="n">In force</td>
+            <td>The quiet giant. Building intensity (KLB) is now scored on the infrastructure serving a site &mdash; more infrastructure, more allowable floor area. Palmerah's intensity nearly tripled under the rule. This is a policy machine that converts rail access into height rights, and therefore into land value.</td>
+          </tr>
+          <tr>
+            <td><b>MRT Phase 2A</b><br><span class="mono">Bundaran HI &rarr; Kota Tua</span></td>
+            <td class="n">Fully operational 2029</td>
+            <td>Extends the north&ndash;south line to 22.2 km. Consultants are already calling <b>Thamrin&ndash;Kota Tua the next development hotspot</b>. The old city's central spine is currently mid-tier and is the most plausible new premium zone in Jakarta proper.</td>
+          </tr>
+          <tr>
+            <td><b>MRT East&ndash;West line</b><br><span class="mono">Medan Satria (Bekasi) &rarr; Tomang</span></td>
+            <td class="n">Construction from 2026; opening ~2030</td>
+            <td>24.5 km, 21 stations, first stage of an eventual 84 km Cikarang&ndash;Balaraja corridor. Repricing the entire East Jakarta / Bekasi commuter belt &mdash; the cheapest strata in the region. This is a decade-long thesis, not a next-year trade.</td>
+          </tr>
+          <tr>
+            <td><b>Giant Sea Wall</b><br><span class="mono">Jakarta Bay segment</span></td>
+            <td class="n">Groundbreaking targeted Sept 2026</td>
+            <td>Binary for the north. Built &rarr; the flood discount compresses. Stalled &rarr; the north keeps sinking. Do not underwrite it.</td>
+          </tr>
+          <tr>
+            <td><b>PIK 2</b><br><span class="mono">~2,650 ha, Tangerang</span></td>
+            <td class="n">Building; PSN status contested</td>
+            <td>The only genuinely new Tier 1 zone. National-strategic-project status was clarified as applying only to the 1,755 ha "Tropical Coastland" ecotourism component (~IDR 65tn, private funding). Faces calls for revocation and the fallout of the Tangerang sea-fence scandal. High upside, real political tail risk.</td>
+          </tr>
+          <tr>
+            <td><b>IKN / capital move</b><br><span class="mono">Nusantara, East Kalimantan</span></td>
+            <td class="n">Jakarta still legally the capital</td>
+            <td>In May 2026 the Constitutional Court rejected a challenge to the IKN law, confirming Jakarta remains the capital <b>until a presidential decree (Keppres) says otherwise</b>. The executive zone at IKN completed April 2026; legislative and judicial zones target 2030. <b>The feared "capital flight" discount has not materialised and probably won't.</b> Expect a Washington/New York split &mdash; Jakarta keeps the money.</td>
+          </tr>
+          <tr>
+            <td><b>VAT subsidy (PPN DTP)</b><br><span class="mono">Fiscal</span></td>
+            <td class="n">Through 2026, likely to Dec 2027</td>
+            <td>100% VAT relief on qualifying residential purchases; signalled extension covers landed houses up to IDR 5bn with the subsidy capped on the first IDR 2bn. It is <b>propping up the landed market</b> &mdash; and Colliers notes it has done relatively little for apartments. If you're buying new-build landed, this is real money. Check eligibility before you commit.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MARKET ================= -->
+<section id="market">
+  <div class="wrap">
+    <p class="eyebrow">08 &nbsp;/&nbsp; The numbers</p>
+    <h2>Market state, mid-2026</h2>
+
+    <div class="grid3" style="margin-bottom:36px">
+      <div class="card"><span class="k">Jakarta apartment avg</span><h4 class="num" style="font-size:30px;margin:0 0 4px">36m<span style="font-size:15px;color:var(--ink-3)"> /sqm</span></h4><p class="mono" style="color:var(--ink-2);margin:0">+0.8% y/y. Median closer to 32m &mdash; SCBD and Sudirman drag the mean up.</p></div>
+      <div class="card"><span class="k">2025 new supply</span><h4 class="num" style="font-size:30px;margin:0 0 4px">~2,200<span style="font-size:15px;color:var(--ink-3)"> units</span></h4><p class="mono" style="color:var(--ink-2);margin:0">Roughly half of 2024. Total stock ~232,000. The slowdown is what <em>prevented</em> oversupply.</p></div>
+      <div class="card"><span class="k">Days on market</span><h4 class="num" style="font-size:30px;margin:0 0 4px">~95<span style="font-size:15px;color:var(--ink-3)"> days (apt)</span></h4><p class="mono" style="color:var(--ink-2);margin:0">vs ~70 for houses, 120+ for luxury. Buyers negotiate harder than they did two years ago.</p></div>
+      <div class="card"><span class="k">Typical discount to ask</span><h4 class="num" style="font-size:30px;margin:0 0 4px">3&ndash;6%</h4><p class="mono" style="color:var(--ink-2);margin:0">Median ~4% below listing. 70&ndash;80% of Jakarta property sells at or below asking. <b>Negotiate.</b></p></div>
+      <div class="card"><span class="k">Landed land price</span><h4 class="num" style="font-size:30px;margin:0 0 4px">13.2m<span style="font-size:15px;color:var(--ink-3)"> /sqm</span></h4><p class="mono" style="color:var(--ink-2);margin:0">Greater Jakarta average, +3% y/y &mdash; outpacing apartments threefold.</p></div>
+      <div class="card"><span class="k">Serviced apt occupancy</span><h4 class="num" style="font-size:30px;margin:0 0 4px">55&ndash;65%</h4><p class="mono" style="color:var(--ink-2);margin:0">Rents plateaued entering 2026. Demand is renewals, not new arrivals.</p></div>
+    </div>
+
+    <h3>What the consultants are actually saying</h3>
+    <ul class="rule-list">
+      <li><span class="t">Colliers</span><span>The market "stabilized" through 2025 &mdash; not booming, not under pressure. South Jakarta is the most active corridor and is expected to supply ~60% of 2026's new units. Under-construction transactions are concentrated in the high-end luxury segment. The property type most likely to <b>underperform is the old or poorly managed apartment</b>: service charges, oversupply and weak resale eat the returns.</span></li>
+          <li><span class="t">Cushman &amp; Wakefield</span><span>Projects connected to the MRT, LRT and KRL recorded better sales than other locations. The Thamrin&ndash;Kota Tua corridor is the next development hotspot. Landed housing is showing resilience.</span></li>
+      <li><span class="t">Expat housing</span><span>Demand is <b>replacement-led</b>, not growth-led. New supply is constrained by land scarcity in mature expat neighbourhoods, so secure, well-managed compounds retain pricing power, and competition for premium family units stays intense through 2026. <b>Family-sized (3BR+) stock in established expat districts is genuinely scarce.</b></span></li>
+      <li><span class="t">Forecast</span><span>2026: 0&ndash;2% growth in weaker apartment locations, 2&ndash;5% in good landed, 4&ndash;6% in the strongest Greater Jakarta neighbourhoods (BSD, Gading Serpong, Alam Sutera, Bintaro, Cilandak, Cipete). Headwinds: the June 2026 BI rate rise, weak household purchasing power, and pockets of local oversupply.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= DUE DILIGENCE ================= -->
+<section id="dd" class="tint">
+  <div class="wrap">
+    <p class="eyebrow">09 &nbsp;/&nbsp; Before you sign</p>
+    <h2>The checklist</h2>
+    <p class="lede narrow">Work top to bottom. Do not skip 01, and do not pay a deposit before 04.</p>
+
+    <div class="grid2">
+      <div>
+        <h4>Title and legal</h4>
+        <ol class="checklist">
+          <li><b>Run a certificate check at BPN</b>Have the notary/PPAT do a <em>pengecekan sertifikat</em>. Verify the owner, the area, the expiry, and any mortgage or court block. Before any money moves.</li>
+          <li><b>Read the expiry date on the HGB</b>Especially on any building older than ~1995. Ask who is responsible for renewal and what it will cost. On strata, this is a collective liability you're inheriting.</li>
+          <li><b>Confirm PBG / IMB exists</b>The building permit. A house with unpermitted extensions is a house you cannot cleanly sell or finance.</li>
+          <li><b>Appoint your own notary</b>Not the seller's, not the developer's. This is the person protecting your money.</li>
+          <li><b>Check the zoning (ITBX)</b>Look the plot up against the RDTR &mdash; the Jakarta Satu portal has an interactive map. Confirm the residential use is permitted and see the allowed intensity. It also tells you what your neighbour may one day build.</li>
+        </ol>
+      </div>
+      <div>
+        <h4>The asset itself</h4>
+        <ol class="checklist" style="counter-reset:c 5">
+          <li><b>Visit in the wet season and at rush hour</b>Twice. Once when it rains. Once at 7:30am on a Tuesday. Time the actual journey to work and to school.</li>
+          <li><b>For apartments: audit the building, not the unit</b>Ask for the management's financials. What is the IPL per sqm, how much has it risen in five years, what is in the sinking fund, and when were the lifts, pumps and chillers last replaced? A tower with a depleted sinking fund is a future special assessment with your name on it.</li>
+          <li><b>Check the occupancy rate of the tower</b>Walk the corridors at night and count lit windows. A half-empty tower has a broken service-charge model and a broken resale market.</li>
+          <li><b>Research the developer</b>Look at what they delivered five and ten years ago, and whether they delivered on time. On off-plan, this is the whole investment.</li>
+          <li><b>Get an independent valuation</b>Not the bank's, not the agent's. Especially in a market where 70&ndash;80% of stock sells below asking.</li>
+          <li><b>Negotiate</b>Median discount to asking is ~4%. Days on market are stretching. In this market, the first number is not the number.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOMERSET ================= -->
+<section id="somerset">
+  <div class="wrap">
+    <p class="eyebrow">10 &nbsp;/&nbsp; Worked example</p>
+    <h2>Case study: Somerset Berlian</h2>
+    <p class="lede narrow">A concrete application of everything above &mdash; and a useful illustration of how a <em>good address</em> and a <em>good asset</em> are not the same thing.</p>
+
+    <div class="grid2">
+      <div>
+        <ul class="rule-list">
+          <li><span class="t">Location</span><span>Jl. Permata Berlian, Grogol Utara, Kebayoran Lama, South Jakarta 12210 &mdash; the Permata Hijau district.</span></li>
+          <li><span class="t">Asset</span><span>104 serviced apartment units, 2&ndash;3 bedroom, family-sized. Developed by PT Permata Berlian Realty, a Pakuwon subsidiary. Early/mid-1990s vintage.</span></li>
+          <li><span class="t">Indicative resale</span><span>Asks around IDR 2.7bn have circulated for larger units.</span></li>
+          <li><span class="t">Amenity</span><span>Pool, gym, sauna, tennis, playground, minimart, restaurant, 24h security. Near ITC Permata Hijau, Gandaria City, Senayan; Binus and JIS within reach.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="margin-top:0">The read</h4>
+        <p><b>What's good:</b> Permata Hijau is genuinely leafy and well-planned, with real cachet and permanent land scarcity. 3-bedroom family stock in an established expat district is exactly the thing consultants say is structurally short. Pakuwon is a competent developer. The expat rental pool here is replacement-led and stable.</p>
+        <p><b>What's not:</b> three things, and they compound.</p>
+        <p>&mdash; It sits in Kebayoran <em>Lama</em>, not <em>Baru</em>. On the cheaper side of a 1950s planning line, on the congested Jl. Panjang corridor.<br>
+        &mdash; <b>No MRT.</b> In a market where transit-connected stock is measurably outperforming, this is a handicap that will not fix itself.<br>
+        &mdash; <b>1990s serviced apartment, non-CBD.</b> That is, precisely, the product category Colliers flags as the likeliest underperformer &mdash; and the CBD premium over the periphery has been <em>widening</em>.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Verdict.</strong> A hold-and-let asset, not an appreciation asset. The scarcity of large expat-grade family units is the floor under it; the age of the building and the absence of rail are the ceiling. If you're considering it, the questions that decide it are all in the building's accounts: <em>what is the IPL per sqm, how fast is it rising, what's in the sinking fund, when does the underlying HGB expire, and who pays for the renewal?</em> Ask those four questions before you ask about the view.</p>
+    </div>
+
+    <h4>The comparable set to price it against</h4>
+    <p>Do not value it against the market. Value it against these:</p>
+    <ul class="rule-list">
+      <li><span class="t">Pakubuwono</span><span>The local premium benchmark in the same district. Sets the ceiling. If Somerset trades at a wide discount to Pakubuwono per sqm, ask why &mdash; and then check whether the answer is fixable (finishes) or not (building age, management).</span></li>
+      <li><span class="t">Pondok Indah Golf Apts</span><span>Same product, same era, same tenant pool &mdash; but with JIS on the doorstep and a golf outlook. The relevant question: what is the school-proximity premium worth, and are you paying it?</span></li>
+      <li><span class="t">Senayan / Sudirman serviced</span><span>The CBD comparison. This is the yardstick that tells you what the <em>non-CBD discount</em> is currently worth. It has been widening.</span></li>
+      <li><span class="t">Cipete / Fatmawati new stock</span><span>The transit alternative. Newer, smaller, on the MRT. If growth matters more to you than space, this is the honest competitor.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer id="sources">
+  <div class="wrap">
+    <h4>Sources &amp; further reading</h4>
+    <p style="max-width:70ch">Market figures are drawn from published research current to mid-2026. Zone-level price bands, tier assignments and the 1&ndash;5 scores in the shortlist tool are my own judgement built on asking-price ranges and public commentary &mdash; they are a starting bracket, not an appraisal. Verify anything you would act on.</p>
+    <ul class="srcs">
+      <li><a href="https://www.colliers.com/en-id/research">Colliers Indonesia &mdash; quarterly property market reports</a></li>
+      <li><a href="https://www.cushmanwakefield.com/en/indonesia/insights/jakarta-marketbeat">Cushman &amp; Wakefield &mdash; Jakarta MarketBeat</a></li>
+      <li><a href="https://www.jll.com/en-sea/insights/market-dynamics/jakarta-residential">JLL &mdash; Jakarta residential market dynamics</a></li>
+      <li><a href="https://www.globalpropertyguide.com/asia/indonesia/price-history">Global Property Guide &mdash; Indonesia price history</a></li>
+      <li><a href="https://jakartasatu.jakarta.go.id/pkrdtr/">Jakarta Satu &mdash; RDTR portal (Pergub 31/2022)</a></li>
+      <li><a href="https://gistaru.atrbpn.go.id/rdtrinteraktif/">ATR/BPN &mdash; interactive RDTR map</a></li>
+      <li><a href="https://jakarta.bps.go.id/">BPS &mdash; DKI Jakarta statistics</a></li>
+      <li><a href="https://www.thejakartapost.com/business/2026/01/12/jakartas-apartment-supply-sees-steep-decline-in-2025.html">Jakarta Post &mdash; apartment supply decline, Jan 2026</a></li>
+      <li><a href="https://jakartaglobe.id/news/constitutional-court-confirms-jakarta-still-indonesias-capital-not-nusantara">Jakarta Globe &mdash; Constitutional Court on capital status, May 2026</a></li>
+      <li><a href="https://jakartaglobe.id/news/jakarta-mrt-phase-2a-on-track-for-2029-full-operation">Jakarta Globe &mdash; MRT Phase 2A timeline</a></li>
+      <li><a href="https://en.antaranews.com/news/342086/indonesia-clarifies-pik-2-psn-status-limited-to-ecotourism-project">Antara &mdash; PIK 2 national strategic project status</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Giant_Sea_Wall_Jakarta">Giant Sea Wall Jakarta &mdash; background</a></li>
+    </ul>
+    <p style="margin-top:32px;font-family:var(--mono);font-size:11.5px;line-height:1.7;max-width:70ch;color:#7E7B76">
+      Not legal, tax or investment advice. Figures are indicative and change. Verify title with a licensed notary/PPAT and the BPN land office before committing funds. Built for G. &amp; A. &middot; Rev. July 2026.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- Zone dataset ----------------
+     Scores 1-5, my judgement. value = price-for-what-you-get,
+     not cheapness. growth = 5yr appreciation potential.        */
+  var ZONES = [
+    {n:"Menteng",              apt:70, commute:5, school:2, transit:4, flood:5, value:1, growth:2, liquid:4, life:3},
+    {n:"SCBD & Kuningan",      apt:65, commute:5, school:2, transit:5, flood:5, value:2, growth:3, liquid:5, life:5},
+    {n:"Kebayoran Baru",       apt:50, commute:4, school:3, transit:5, flood:5, value:2, growth:3, liquid:5, life:5},
+    {n:"Pondok Indah",         apt:45, commute:2, school:5, transit:1, flood:5, value:2, growth:2, liquid:4, life:4},
+    {n:"PIK & PIK 2",          apt:45, commute:2, school:4, transit:1, flood:2, value:3, growth:5, liquid:3, life:5},
+    {n:"Permata Hijau",        apt:36, commute:3, school:3, transit:2, flood:3, value:3, growth:2, liquid:3, life:3},
+    {n:"Kemang & Cipete",      apt:32, commute:3, school:5, transit:3, flood:2, value:3, growth:3, liquid:4, life:5},
+    {n:"Cilandak / Simatupang",apt:31, commute:3, school:5, transit:3, flood:4, value:4, growth:3, liquid:4, life:3},
+    {n:"Lebak Bulus",          apt:30, commute:3, school:5, transit:5, flood:4, value:4, growth:5, liquid:3, life:2},
+    {n:"Puri Indah",           apt:32, commute:2, school:3, transit:1, flood:3, value:3, growth:2, liquid:3, life:4},
+    {n:"Kelapa Gading",        apt:28, commute:2, school:3, transit:3, flood:1, value:3, growth:2, liquid:3, life:5},
+    {n:"Kemayoran / Senen",    apt:27, commute:4, school:1, transit:3, flood:3, value:4, growth:4, liquid:2, life:2},
+    {n:"Grogol / Tomang",      apt:25, commute:3, school:2, transit:3, flood:2, value:4, growth:4, liquid:2, life:3},
+    {n:"BSD / Gading Serpong", apt:23, commute:1, school:4, transit:2, flood:4, value:5, growth:5, liquid:4, life:4},
+    {n:"Bintaro",              apt:23, commute:1, school:4, transit:3, flood:3, value:5, growth:4, liquid:3, life:3},
+    {n:"Sunter / Ancol",       apt:23, commute:3, school:1, transit:2, flood:1, value:3, growth:1, liquid:2, life:3},
+    {n:"East Jakarta",         apt:22, commute:2, school:1, transit:3, flood:3, value:5, growth:4, liquid:2, life:2},
+    {n:"Bekasi / Depok",       apt:22, commute:1, school:2, transit:3, flood:3, value:5, growth:3, liquid:3, life:2}
+  ];
+
+  var W = ["commute","school","transit","flood","value","growth","liquid","life"];
+
+  function bindOut(id, outId, fmt){
+    var el = document.getElementById(id), out = document.getElementById(outId);
+    if(!el || !out) return;
+    var sync = function(){ out.textContent = fmt ? fmt(el.value) : el.value; };
+    el.addEventListener("input", sync); sync();
+  }
+
+  /* ---------------- Scorer ---------------- */
+  var rank = document.getElementById("rank");
+  var maxPrice = document.getElementById("maxPrice");
+  var budgetTag = document.getElementById("budgetTag");
+
+  function score(){
+    var w = {}, sum = 0;
+    W.forEach(function(k){
+      var el = document.getElementById("w_"+k);
+      w[k] = el ? Number(el.value) : 3;
+      sum += w[k];
+    });
+    if(sum === 0) sum = 1;
+
+    var cap = Number(maxPrice.value);
+    budgetTag.textContent = cap >= 90 ? "Budget filter: any" : "Budget filter: \u2264 " + cap + "m/sqm";
+
+    var list = ZONES.filter(function(z){ return cap >= 90 || z.apt <= cap; }).map(function(z){
+      var s = 0;
+      W.forEach(function(k){ s += w[k] * z[k]; });
+      return { n:z.n, apt:z.apt, s: (s/sum) };
+    }).sort(function(a,b){ return b.s - a.s; }).slice(0,10);
+
+    if(!list.length){
+      rank.innerHTML = '<li style="grid-template-columns:1fr"><span>No zone fits that budget. Raise the cap.</span></li>';
+      return;
+    }
+
+    var top = list[0].s || 1;
+    rank.innerHTML = list.map(function(z,i){
+      var pct = Math.max(14, Math.round((z.s/top)*100));
+      return '<li>' +
+        '<span class="pos">'+String(i+1).padStart(2,"0")+'</span>' +
+        '<span class="bar"><span class="fill" style="width:'+pct+'%"></span><span class="nm">'+z.n+'</span></span>' +
+        '<span class="sc">'+z.s.toFixed(2)+' &middot; '+z.apt+'m</span>' +
+      '</li>';
+    }).join("");
+  }
+
+  W.forEach(function(k){
+    bindOut("w_"+k, "o_"+k);
+    var el = document.getElementById("w_"+k);
+    if(el) el.addEventListener("input", score);
+  });
+  bindOut("maxPrice","o_price", function(v){ return v >= 90 ? "any" : v+"m"; });
+  maxPrice.addEventListener("input", score);
+  score();
+
+  /* ---------------- Cost calculator ---------------- */
+  var f = { M: 1e6 };
+  function idr(m){ // m in millions
+    if(m >= 1000) return (m/1000).toFixed(2).replace(/\.00$/,"") + " bn";
+    return Math.round(m).toLocaleString("en-US") + " m";
+  }
+
+  var price = document.getElementById("c_price"),
+      dp    = document.getElementById("c_dp"),
+      rate  = document.getElementById("c_rate"),
+      yrs   = document.getElementById("c_years"),
+      sqm   = document.getElementById("c_sqm"),
+      type  = document.getElementById("c_type");
+
+  function calc(){
+    var P  = Math.max(100, Number(price.value)||0);   // millions
+    var d  = Number(dp.value)/100;
+    var r  = Number(rate.value)/100/12;
+    var n  = Number(yrs.value)*12;
+    var A  = Math.max(20, Number(sqm.value)||0);
+
+    var loan = P*(1-d);
+
+    // costs
+    var bphtb  = Math.max(0, (P - 80) * 0.05);  // 5% less IDR 80m NPOPTKP
+    var notary = P * 0.01;
+    var bank   = loan * 0.015;
+    var fitout = A * 4;                          // IDR 4m/sqm
+    var vat = 0;
+    if(type.value === "new_full") vat = P * 0.11;
+    if(type.value === "new_subsidised") vat = Math.max(0, (P - 2000)) * 0.11; // first 2bn relieved
+
+    var fees = bphtb + notary + bank + fitout + vat;
+    var cash = P*d + fees;
+
+    var m = (r === 0) ? loan/n : loan * r / (1 - Math.pow(1+r, -n));
+    var totalLoan = m*n;
+    var interest = totalLoan - loan;
+
+    var ipl = A * 0.022; // ~IDR 22k/sqm/mo, expressed in millions
+
+    document.getElementById("r_cash").textContent  = idr(cash);
+    document.getElementById("r_month").textContent = idr(m);
+    document.getElementById("r_fees").textContent  = idr(fees) + "  (" + Math.round(fees/P*100) + "%)";
+    document.getElementById("r_ipl").textContent   = idr(ipl);
+    document.getElementById("r_total").textContent = idr(totalLoan);
+    document.getElementById("r_int").textContent   = idr(interest);
+  }
+
+  bindOut("c_dp","o_dp", function(v){ return v+"%"; });
+  bindOut("c_rate","o_rate", function(v){ return Number(v).toFixed(2)+"%"; });
+  bindOut("c_years","o_years", function(v){ return v+" yrs"; });
+  [price,dp,rate,yrs,sqm,type].forEach(function(el){
+    el.addEventListener("input", calc);
+    el.addEventListener("change", calc);
+  });
+  calc();
+})();
+</script>
+</body>
+</html>
